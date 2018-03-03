@@ -1,0 +1,14 @@
+/* index.html */
+.jumbotron {
+    height: 175px;
+    background-image: url("graphs.jpg");
+}
+
+#bigtalk{
+    color: white;
+}
+
+/* signup.html */
+#form{
+    padding-top: 65px;
+}
