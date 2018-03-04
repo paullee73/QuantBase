@@ -24,12 +24,9 @@
                     success: function (data, status) {
 
                         var name = (data["Meta Data"]["1: Symbol"]);
-                        console.log(name);
                         var date = (data["Meta Data"]["3: Last Refreshed"]);
-                        console.log(date);
                         var obj = data["Technical Analysis: EMA"]
                         var emaVal = obj[Object.keys(obj)[0]]["EMA"];
-                        console.log(emaVal);
                         document.getElementById("stock" + num).innerHTML = name;
                         document.getElementById("ema" + num).innerHTML = emaVal;
                         document.getElementById("date" + num).innerHTML = date;
@@ -142,6 +139,13 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 <footer class="footer">
+    <div class="container" id="footer">
+        <small>
+            <center>
+                Copyright © 2017 QuantBase Technologies
+            </center>
+        </small>
+    </div>
 </footer>
 
 </html>
