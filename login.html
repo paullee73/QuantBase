@@ -34,7 +34,7 @@
                             <a href="portfolio.html">Portfolio</a>
                         </li>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" id="top-right">
                         <li>
                             <a href="signup.html">
                                 <span class="glyphicon glyphicon-user"></span> Sign Up</a>
@@ -65,7 +65,7 @@
                     <label for="pwd">Password:</label>
                     <input type="password" class="form-control" id="inputPassword">
                 </div>
-                <button type="submit" class="btn btn-default" onClick="login()">Submit</button>
+                <button type="submit" class="btn btn-default" onClick="login()">Login</button>
             </div>
         </div>
         <div class="col-md-2">
@@ -77,6 +77,17 @@
     </center>
 
     <script>
+        //constructor for user object
+        function User(name, email, password) {
+            this.name = name;
+            this.email = email;
+            this.password = password;
+            this.stocks = [];
+            this.signedIn = false;
+            this.addStock = function (stock) {
+                this.stocks.push(stock);
+            }
+        };
         function login() {
             var enteredEmail = document.getElementById("inputEmail").value;
             var enteredPassword = document.getElementById("inputPassword").value;
@@ -84,13 +95,20 @@
                 document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
             }
             var obj = $.parseJSON(sessionStorage.getItem(enteredEmail));
-            if (enteredPassword != obj['password']) {
+            if (enteredPassword != obj["password"]) {
                 document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
             }
             else {
                 document.getElementById("signin-msg").innerHTML = "";
                 document.getElementById("login-form").style.display = "none";
                 document.getElementById("welcome-msg").innerHTML = "Welcome " + obj['name'];
+                document.getElementById("top-right").style.display = "none";
+                // Update the stored user: signedIn variable
+                sessionStorage.removeItem(enteredEmail);
+                var user = new User(obj["name"], obj["email"], enteredPassword);
+                user.stocks = obj["stocks"];
+                user.signedIn = true;
+                sessionStorage.setItem(enteredEmail, JSON.stringify(user));
             }
         }
     </script>
