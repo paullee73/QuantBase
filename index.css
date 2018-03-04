@@ -12,6 +12,7 @@
 #signup-form{
     padding-top: 65px;
 }
+
 #user-msg, #signin-msg{
     color: red;
 }
