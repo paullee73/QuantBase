@@ -9,6 +9,23 @@
 }
 
 /* signup.html */
-#form{
+#signup-form{
     padding-top: 65px;
+}
+#user-msg, #signin-msg{
+    color: red;
+}
+#invite-msg{
+    padding-top: 80px;
+    font-size: 24pt;
+}
+
+/* login.html  */
+#login-form{
+    padding-top: 65px;
+}
+
+#welcome-msg{
+    padding-top: 80px;
+    font-size: 24pt;
 }

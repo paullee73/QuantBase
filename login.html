@@ -48,8 +48,11 @@
             </div>
         </nav>
     </header>
-    <!-- Sign up form, stores user objects in array users -->
-    <div class="container">
+    <center>
+        <div id="welcome-msg">
+        </div>
+    </center>
+    <div class="container" id="login-form">
         <div class="row">
             <div class="col-md-2">
             </div>
@@ -68,11 +71,27 @@
         <div class="col-md-2">
         </div>
     </div>
+    <center>
+        <div id="signin-msg">
+        </div>
+    </center>
 
     <script>
         function login() {
-            var users = JSON.parse(localStorage.getItem("userBase"));
-            console.log(users);
+            var enteredEmail = document.getElementById("inputEmail").value;
+            var enteredPassword = document.getElementById("inputPassword").value;
+            if (!(enteredEmail in sessionStorage)) {
+                document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
+            }
+            var obj = $.parseJSON(sessionStorage.getItem(enteredEmail));
+            if (enteredPassword != obj['password']) {
+                document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
+            }
+            else {
+                document.getElementById("signin-msg").innerHTML = "";
+                document.getElementById("login-form").style.display = "none";
+                document.getElementById("welcome-msg").innerHTML = "Welcome " + obj['name'];
+            }
         }
     </script>
 
