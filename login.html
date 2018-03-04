@@ -48,6 +48,8 @@
             </div>
         </nav>
     </header>
+
+    <!-- Form for logging in -->
     <center>
         <div id="welcome-msg">
         </div>
@@ -88,6 +90,9 @@
                 this.stocks.push(stock);
             }
         };
+        // Validate user input by first, checking if inputted email has been registered, warn user
+        // Then, if password is invalid, warn user
+        // Otherwise, sign-in is valid and update signedIn attribute: false->true
         function login() {
             var enteredEmail = document.getElementById("inputEmail").value;
             var enteredPassword = document.getElementById("inputPassword").value;
