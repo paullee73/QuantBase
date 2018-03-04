@@ -9,12 +9,24 @@
 }
 
 /* signup.html */
-#form{
+#signup-form{
     padding-top: 65px;
 }
 
-/* set icon sizes in exchange.html */
-.icons{
-    height:50px;
-    width:50px
+#user-msg, #signin-msg{
+    color: red;
+}
+#invite-msg{
+    padding-top: 80px;
+    font-size: 24pt;
+}
+
+/* login.html  */
+#login-form{
+    padding-top: 65px;
+}
+
+#welcome-msg{
+    padding-top: 80px;
+    font-size: 24pt;
 }

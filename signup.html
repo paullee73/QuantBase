@@ -48,9 +48,12 @@
             </div>
         </nav>
     </header>
-
+    <center>
+        <div id="invite-msg">
+        </div>
+    </center>
     <!-- Sign up form, stores user objects in array users -->
-    <div class="container">
+    <div class="container" id="signup-form">
         <div class="row">
             <div class="col-md-2">
             </div>
@@ -61,49 +64,52 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email address:</label>
-                    <input type="email" class="form-control" id="inputEmail">
+                    <input type="email" class="form-control is-valid" id="inputEmail">
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password:</label>
                     <input type="password" class="form-control" id="inputPassword">
                 </div>
-                <button type="submit" class="btn btn-default" onClick="addUser()">Submit</button>
+                <button type="submit" class="btn btn-default" onClick="addUser()">Sign Up</button>
             </div>
         </div>
         <div class="col-md-2">
         </div>
     </div>
-    </div>
-
+    <center>
+        <div id="user-msg">
+        </div>
+    </center>
 
 
     <script>
-        //array to store user objects
-        var users = [];
         //constructor for user object
         function User(name, email, password) {
             this.name = name;
             this.email = email;
             this.password = password;
             this.stocks = [];
+            this.signedIn = false;
             this.addStock = function (stock) {
                 this.stocks.push(stock);
             }
         };
-        var users = [];
+        // Get element values from form and create new object
+        //Place new objects in sessionStorage as {key: email, value: JSON of Object}
         function addUser() {
             var name = document.getElementById("inputName").value;
             var email = document.getElementById("inputEmail").value;
             var password = document.getElementById("inputPassword").value;
             var newUser = new User(name, email, password);
-            users.push(newUser);
-            for (i = 0; i < users.length; i++) {
-                console.log(users[i].name);
-                console.log(users[i].email);
-                console.log(users[i].password);
+            if (!(name in sessionStorage)) {
+                sessionStorage.setItem(email, JSON.stringify(newUser));
+                document.getElementById("user-msg").innerHTML = "";
+                document.getElementById("signup-form").style.display = "none";
+                document.getElementById("invite-msg").innerHTML = "Welcome to QuantBase! Login with your new account!";
             }
-
-            localStorage.setItem("userBase", JSON.stringify(users));
+            else {
+                document.getElementById("user-msg").innerHTML = "The email has already been used";
+            }
         }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
