@@ -12,3 +12,9 @@
 #form{
     padding-top: 65px;
 }
+
+/* set icon sizes in exchange.html */
+.icons{
+    height:50px;
+    width:50px
+}

@@ -5,7 +5,40 @@
     <link rel="stylesheet" href="index.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script>
+        $(document).ready(function () {
+            var companies = ["GOOGl", "AMZN", "FB", "MSFT", "TWTR"];
+            var num = 1;
+            for (i = 0; i < companies.length; i++) {
+                $.ajax({
+                    url: "https://www.alphavantage.co/query?function=EMA&symbol=" + companies[i] + "&interval=15min&time_period=10&series_type=close&apikey=B35PYTKDNDCDQVK2",
+                    type: 'GET',
+                    async: false,
+                    cache: false,
+                    timeout: 30000,
+                    error: function () {
+                        return true;
+                    },
+                    success: function (data, status) {
+
+                        var name = (data["Meta Data"]["1: Symbol"]);
+                        console.log(name);
+                        var date = (data["Meta Data"]["3: Last Refreshed"]);
+                        console.log(date);
+                        var obj = data["Technical Analysis: EMA"]
+                        var emaVal = obj[Object.keys(obj)[0]]["EMA"];
+                        console.log(emaVal);
+                        document.getElementById("stock" + num).innerHTML = name;
+                        document.getElementById("ema" + num).innerHTML = emaVal;
+                        document.getElementById("date" + num).innerHTML = date;
+                        num++;
+                    }
+                });
+            };
+        });
+    </script>
     <title>Quantbase</title>
 </head>
 
@@ -48,12 +81,65 @@
             </div>
         </nav>
     </header>
-    </header>
+    <div class="container" style="padding-top: 60px">
+        <h2>Trending</h2>
+        <p>Here are the current top trending stocks available!</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Stock</th>
+                    <th>Current EMA</th>
+                    <th>Last Checked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <img class="icons" src="google.png" alt="Google">
+                    </td>
+                    <td id="stock1"></td>
+                    <td id="ema1"></td>
+                    <td id="date1"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="icons" src="amazon.png" alt="Amazon">
+                    </td>
+                    <td id="stock2"></td>
+                    <td id="ema2"></td>
+                    <td id="date2"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="icons" src="facebook.png" alt="Facebook">
+                    </td>
+                    <td id="stock3"></td>
+                    <td id="ema3"></td>
+                    <td id="date3"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="icons" src="microsoft.png" alt="Microsoft">
+                    </td>
+                    <td id="stock4"></td>
+                    <td id="ema4"></td>
+                    <td id="date4"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="icons" src="twitter.png" alt="Twitter">
+                    </td>
+                    <td id="stock5"></td>
+                    <td id="ema5"></td>
+                    <td id="date5"></td>
+                </tr>
+            </tbody>
+        </table>
 
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 <footer class="footer">
 </footer>
