@@ -5,17 +5,20 @@
     <link rel="stylesheet" href="index.css" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- addin jQuery to the file -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <script>
+        // perform the ajax request on the page load
         $(document).ready(function () {
+            // get the top 5 companies, set default for now
             var companies = ["GOOGl", "AMZN", "FB", "MSFT", "TWTR"];
             var num = 1;
             for (i = 0; i < companies.length; i++) {
                 $.ajax({
                     url: "https://www.alphavantage.co/query?function=EMA&symbol=" + companies[i] + "&interval=15min&time_period=10&series_type=close&apikey=B35PYTKDNDCDQVK2",
-                    type: 'GET',
-                    async: false,
+                    type: 'GET', //get request for the API
+                    async: false, //we want async to be off here so the data is loaded in order
                     cache: false,
                     timeout: 30000,
                     error: function () {
@@ -23,13 +26,13 @@
                     },
                     success: function (data, status) {
 
-                        var name = (data["Meta Data"]["1: Symbol"]);
-                        var date = (data["Meta Data"]["3: Last Refreshed"]);
+                        var name = (data["Meta Data"]["1: Symbol"]); //get the name of the stock from the API
+                        var date = (data["Meta Data"]["3: Last Refreshed"]);//get the time of last update of the stock
                         var obj = data["Technical Analysis: EMA"]
-                        var emaVal = obj[Object.keys(obj)[0]]["EMA"];
-                        document.getElementById("stock" + num).innerHTML = name;
-                        document.getElementById("ema" + num).innerHTML = emaVal;
-                        document.getElementById("date" + num).innerHTML = date;
+                        var emaVal = obj[Object.keys(obj)[0]]["EMA"]; //get the EMA value of the stock
+                        document.getElementById("stock" + num).innerHTML = name; //set the name on the table
+                        document.getElementById("ema" + num).innerHTML = emaVal;//set the EMA value on the table
+                        document.getElementById("date" + num).innerHTML = date;//set the date on the table
                         num++;
                     }
                 });
@@ -93,40 +96,50 @@
             <tbody>
                 <tr>
                     <td>
+                        <!-- image for stock1 -->
                         <img class="icons" src="google.png" alt="Google">
                     </td>
+                    <!-- add the information for stock1 -->
                     <td id="stock1"></td>
                     <td id="ema1"></td>
                     <td id="date1"></td>
                 </tr>
                 <tr>
                     <td>
+                        <!-- add image of stock2 -->
                         <img class="icons" src="amazon.png" alt="Amazon">
                     </td>
+                    <!-- add information for stock 2 -->
                     <td id="stock2"></td>
                     <td id="ema2"></td>
                     <td id="date2"></td>
                 </tr>
                 <tr>
                     <td>
+                        <!-- image for stock3 -->
                         <img class="icons" src="facebook.png" alt="Facebook">
                     </td>
+                    <!-- information for stock3 -->
                     <td id="stock3"></td>
                     <td id="ema3"></td>
                     <td id="date3"></td>
                 </tr>
                 <tr>
                     <td>
+                        <!-- image for stock4 -->
                         <img class="icons" src="microsoft.png" alt="Microsoft">
                     </td>
+                    <!-- information for stock4 -->
                     <td id="stock4"></td>
                     <td id="ema4"></td>
                     <td id="date4"></td>
                 </tr>
                 <tr>
                     <td>
+                        <!-- image for stock5 -->
                         <img class="icons" src="twitter.png" alt="Twitter">
                     </td>
+                    <!-- information for stock5 -->
                     <td id="stock5"></td>
                     <td id="ema5"></td>
                     <td id="date5"></td>
