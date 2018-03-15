@@ -101,7 +101,7 @@
             var email = document.getElementById("inputEmail").value;
             var password = document.getElementById("inputPassword").value;
             var newUser = new User(name, email, password);
-            if (!(name in sessionStorage)) {
+            if (!(email in sessionStorage)) {
                 sessionStorage.setItem(email, JSON.stringify(newUser));
                 document.getElementById("user-msg").innerHTML = "";
                 document.getElementById("signup-form").style.display = "none";
