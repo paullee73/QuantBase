@@ -1,0 +1,51 @@
+/* index.html */
+.jumbotron {
+    height: 175px;
+    background-image: url("graphs.jpg");
+}
+
+#bigtalk{
+    color: white;
+}
+
+/* signup.html */
+#signup-form{
+    padding-top: 65px;
+}
+
+#user-msg, #signin-msg{
+    color: red;
+}
+#invite-msg{
+    padding-top: 80px;
+    font-size: 24pt;
+}
+
+/* login.html  */
+#login-form{
+    padding-top: 65px;
+}
+
+#welcome-msg{
+    padding-top: 80px;
+    font-size: 24pt;
+}
+
+.icons{
+    height:50px;
+    width:50px
+}
+
+#footer{
+    height: 50px;
+    width:100%;
+    position:fixed;
+    bottom:0px;
+    text-align:center;
+    z-index:9999;
+    background-color: #222;
+    color: #787777;
+    font-family: sans-serif;
+    font-size: 12pt;
+    left: 0px;
+}
