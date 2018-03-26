@@ -1,3 +1,7 @@
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -49,77 +53,76 @@
         </nav>
     </header>
 
-    <!-- Form for logging in -->
-    <center>
-        <div id="welcome-msg">
-        </div>
-    </center>
-    <div class="container" id="login-form">
+        <!-- Sign up form -->
+        <div class="container" id="signup-form" style="padding-top: 120px">
         <div class="row">
             <div class="col-md-2">
+            <!-- take 2 user inputs, email and password, post them to $_SERVER -->
             </div>
             <div class="col-md-8" id="form">
-                <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="email" class="form-control" id="inputEmail">
-                </div>
-                <div class="form-group">
-                    <label for="pwd">Password:</label>
-                    <input type="password" class="form-control" id="inputPassword">
-                </div>
-                <button type="submit" class="btn btn-default" onClick="login()">Login</button>
+                <form class="form-group" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <label for="name">Email Address:</label>
+                    <input class="form-control" name="email" 
+                    value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>">
+                
+                <form class="form-group" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <label for="email">Password:</label>
+                    <input class="form-control" name="password" type="password"
+                    value="<?php if (isset($_POST['password'])) echo $_POST['password']; ?>">
+                    <input type="submit"/>
+                </form>
             </div>
         </div>
         <div class="col-md-2">
+
         </div>
     </div>
-    <center>
-        <div id="signin-msg">
-        </div>
-    </center>
 
-    <script>
-        //constructor for user object
-        function User(name, email, password) {
-            this.name = name;
-            this.email = email;
-            this.password = password;
-            this.stocks = [];
-            this.signedIn = false;
-            this.addStock = function (stock) {
-                this.stocks.push(stock);
-            }
-        };
-        // Validate user input by first, checking if inputted email has been registered, warn user
-        // Then, if password is invalid, warn user
-        // Otherwise, sign-in is valid and update signedIn attribute: false->true
-        function login() {
-            var enteredEmail = document.getElementById("inputEmail").value;
-            var enteredPassword = document.getElementById("inputPassword").value;
-            if (!(enteredEmail in sessionStorage)) {
-                document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
-            }
-            var obj = $.parseJSON(sessionStorage.getItem(enteredEmail));
-            if (enteredPassword != obj["password"]) {
-                document.getElementById("signin-msg").innerHTML = "Email/password is incorrect";
-            }
-            else {
-                document.getElementById("signin-msg").innerHTML = "";
-                document.getElementById("login-form").style.display = "none";
-                document.getElementById("welcome-msg").innerHTML = "Welcome " + obj['name'];
-                document.getElementById("top-right").style.display = "none";
-                // Update the stored user: signedIn variable
-                sessionStorage.removeItem(enteredEmail);
-                var user = new User(obj["name"], obj["email"], enteredPassword);
-                user.stocks = obj["stocks"];
-                user.signedIn = true;
-                sessionStorage.setItem(enteredEmail, JSON.stringify(user));
+<?php
+//definition of user
+class user{
+    public $name;
+    public $email;
+    public $password;
+    public $stocks;
+    public function __construct($name, $email, $password, $stocks){
+        $this->name = $name;
+        $this->email= $email;
+        $this->password = $password;
+        $this->stocks = $stocks;
+    }
+}
+$feedback = NULL;
+// $bar = new user("Paul", "asdf@asdf", "rafara", array("GOOGL", "MSF"));
+// echo $bar->stocks[0];
+
+//whenever user tries to login
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+    //if any fields are empty
+   if (empty($_POST['email']) || empty($_POST['password']))
+      echo "<center><font color='red'><i>Please fill out all fields</i></font> <br /></center>";
+   else 
+   {   	
+        $email = trim($_POST['email']);      // trim() remove leading space
+        $password = trim($_POST['password']);
+        $match = 0;
+        //if there is a match in $_SESSION, then sign in
+        foreach($_SESSION as $key => $value){
+            if($key == $email && $value->password == $password){
+                $match++;
             }
         }
-    </script>
-
-
-
+        if($match > 0){
+            echo "<center><font color='green'><i>You are signed in!</i></font></center>";
+        }
+        else{
+            //alert user there is no match
+            echo "<center><font color='red'><i>Username/password is not correct</i></font></center>";
+        }
+   }      
+}
+?>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

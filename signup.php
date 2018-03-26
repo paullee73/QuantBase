@@ -1,3 +1,7 @@
+<?php 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -22,25 +26,25 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">QuantBase</a>
+                    <a class="navbar-brand" href="index.php">QuantBase</a>
                 </div>
                 <!-- elements in navbar to collapse into button -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="exchange.html">Exchange</a>
+                            <a href="exchange.php">Exchange</a>
                         </li>
                         <li>
-                            <a href="portfolio.html">Portfolio</a>
+                            <a href="portfolio.php">Portfolio</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="signup.html">
+                            <a href="signup.php">
                                 <span class="glyphicon glyphicon-user"></span> Sign Up</a>
                         </li>
                         <li>
-                            <a href="login.html">
+                            <a href="login.php">
                                 <span class="glyphicon glyphicon-log-in"></span> Login</a>
                         </li>
                     </ul>
@@ -52,66 +56,89 @@
         <div id="invite-msg">
         </div>
     </center>
-    <!-- Sign up form, stores user objects in array users -->
+
+    <!-- Sign up form -->
     <div class="container" id="signup-form">
         <div class="row">
             <div class="col-md-2">
+            <!-- Form to post user inputs to $_SERVER -->
+            <!-- ans1 = name, ans2 = email, ans3 = submit -->
             </div>
             <div class="col-md-8" id="form">
-                <div class="form-group">
+                <form class="form-group" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                     <label for="name">Name:</label>
-                    <input type="name" class="form-control" id="inputName">
-                </div>
-                <div class="form-group">
+                    <input class="form-control" name="ans1" 
+                    value="<?php if (isset($_POST['ans1'])) echo $_POST['ans1']; ?>">
+                
+                <form class="form-group" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                     <label for="email">Email address:</label>
-                    <input type="email" class="form-control is-valid" id="inputEmail">
-                </div>
-                <div class="form-group">
-                    <label for="pwd">Password:</label>
-                    <input type="password" class="form-control" id="inputPassword">
-                </div>
-                <button type="submit" class="btn btn-default" onClick="addUser()">Sign Up</button>
+                    <input class="form-control" name="ans2" 
+                    value="<?php if (isset($_POST['ans2'])) echo $_POST['ans2']; ?>">
+
+                <form class="form-group" action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <label for="email">Password:</label>
+                    <input class="form-control" name="ans3" type="password"
+                    value="<?php if (isset($_POST['ans3'])) echo $_POST['ans3']; ?>">
+                    <input type="submit"/>
+                </form>
             </div>
         </div>
         <div class="col-md-2">
+
         </div>
     </div>
-    <center>
-        <div id="user-msg">
-        </div>
-    </center>
 
+<?php
+// class definition for user
+class user{
+    public $name;
+    public $email;
+    public $password;
+    public $stocks;
+    public function __construct($name, $email, $password, $stocks){
+        $this->name = $name;
+        $this->email= $email;
+        $this->password = $password;
+        $this->stocks = $stocks;
+    }
+}
+$allUsers = array();
+$feedback = NULL;
+// $bar = new user("Paul", "asdf@asdf", "rafara", array("GOOGL", "MSF"));
+// echo $bar->stocks[0];
 
-    <script>
-        //constructor for user object
-        function User(name, email, password) {
-            this.name = name;
-            this.email = email;
-            this.password = password;
-            this.stocks = [];
-            this.signedIn = false;
-            this.addStock = function (stock) {
-                this.stocks.push(stock);
-            }
-        };
-        // Get element values from form and create new object
-        //Place new objects in sessionStorage as {key: email, value: JSON of Object}
-        function addUser() {
-            var name = document.getElementById("inputName").value;
-            var email = document.getElementById("inputEmail").value;
-            var password = document.getElementById("inputPassword").value;
-            var newUser = new User(name, email, password);
-            if (!(email in sessionStorage)) {
-                sessionStorage.setItem(email, JSON.stringify(newUser));
-                document.getElementById("user-msg").innerHTML = "";
-                document.getElementById("signup-form").style.display = "none";
-                document.getElementById("invite-msg").innerHTML = "Welcome to QuantBase! Login with your new account!";
-            }
-            else {
-                document.getElementById("user-msg").innerHTML = "The email has already been used";
+// what to do when button is clicked
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+    //if any of te fields are empty, alert user
+   if (empty($_POST['ans1']) || empty($_POST['ans2']) || empty($_POST['ans3']))
+      echo "<center><font color='red'><i>Please fill out all fields</i></font> <br /></center>";
+   else 
+   {   	//remove user space
+        $ans1 = trim($_POST['ans1']);     
+        $ans2 = trim($_POST['ans2']);
+        $ans3 = trim($_POST['ans3']);
+
+        $newUser = new user($ans1, $ans2, $ans3, null);
+        $match = 0;
+        //go through each key-value pair and check if there is a match
+        foreach($_SESSION as $key => $value){
+            if($key == $ans2){
+                $match++;
             }
         }
-    </script>
+        //if the inputted email has been used, warn user
+        if($match > 0){
+            echo "<center><font color='red'><i>Email has already been used</i></font></center>";
+        }
+        else{
+            //if email has never been used before, make account and add to $_SESSION
+            $_SESSION[$ans2] = $newUser;
+            echo "<center><font color='green'><i>Account has been made!</i></font></center>";
+        }
+   }      
+}
+?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
