@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="index.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <title>Quantbase</title>
+</head>
+
+<body ng-app="myApp">
+    <!-- navigation bar -->
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                        aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">QuantBase</a>
+                </div>
+                <!-- elements in navbar to collapse into button -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="exchange.html">Exchange</a>
+                        </li>
+                        <li>
+                            <a href="portfolio.html">Portfolio</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="signup.html">
+                                <span class="glyphicon glyphicon-user"></span> Sign Up</a>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                                <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                        </li>
+                        <li>
+                            <a href="empty.html">
+                                <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <center>
+        <div id="invite-msg">
+        </div>
+    </center>
+    <!-- Sign up form, stores user objects in array users -->
+    <div class="container" id="signup-form">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8" id="form">
+                <div class="form-group">
+                    <form ng-controller="myController">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="username" name="yourusername" class="form-control is-valid" ng-model="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" name="youremail" class="form-control" ng-model="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" name="yourpassword" class="form-control" ng-model="password">
+                        </div>
+
+                        <button type="submit" value="Submit" name="submit" class="btn btn-default" ng-click="getPlace()">Signup</button>
+                        </br>
+                        <center>
+                            <label>{{data}}</label>
+                        </center>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var myApp = angular.module('myApp', []);
+
+        myApp.controller("myController", function ($scope, $http) {
+            var onSuccess = function (data, status, headers, config) {
+                $scope.data = data;
+            };
+
+            var onError = function (data, status, headers, config) {
+                $scope.error = status;
+            }
+
+            $scope.getPlace = function () {
+                if ($scope.username !== undefined) {
+                    var promise = $http.post("signup.php", {
+                        "username": $scope.username,
+                        "email": $scope.email,
+                        "password": $scope.password
+                    });
+                    promise.success(onSuccess);
+                    promise.error(onError);
+                }
+                else {
+                    $scope.data = "undefined";
+                }
+            }
+        });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+<footer class="footer">
+    <div class="container" id="footer">
+        <small>
+            <center>
+                Copyright © 2017 QuantBase Technologies
+            </center>
+        </small>
+    </div>
+</footer>
+
+</html>
